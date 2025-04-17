@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0"><i class="fas fa-folder-open text-danger mr-2"></i>Case Files</h2>
+        <div class="badge badge-danger badge-pill">{{ cases|length }} Active Cases</div>
+    </div>
+
+    <div class="row">
+        {% for case in casess %}
+        <div class="col-md-6 col-xl-4 mb-4">
+            <a href="{{ url_for('evidences.casee', case_id=case.id, team_id=team_id) }}" class="case-card-link">
+                <div class="card case-card h-100">
+                    <div class="card-header bg-white border-bottom-0 pb-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="case-number text-muted">{{ case.name}}</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

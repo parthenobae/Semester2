@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4"><i class="fas fa-users text-primary mr-2"></i>Teams</h2>
+    
+    <div class="row">
+        {% for team in teamss %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <a href="{{ url_for('evidences.cases', team_id=team.id) }}" class="card-link">
+                <div class="card team-card h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="team-icon mr-3">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <h5 class="team-name mb-1">{{ team.name }}</h5>
+                                <p class="team-id mb-0">Team ID: {{ team.id }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

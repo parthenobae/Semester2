@@ -1,0 +1,208 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mb-4">Case Details: {{ casee.id }}</h1>
+    
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs" id="caseTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pics-tab" data-toggle="tab" href="#pics" role="tab" aria-controls="pics" aria-selected="false">Picture Evidence</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="videos-tab" data-toggle="tab" href="#videos" role="tab" aria-controls="videos" aria-selected="false">Video Evidence</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="voice-tab" data-toggle="tab" href="#voice" role="tab" aria-controls="voice" aria-selected="false">Voice Evidence</a>
+        </li>
+    </ul>
+    
+    <!-- Tab Content -->
+    <div class="tab-content" id="caseTabsContent">
+        <!-- Description Tab -->
+        <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5>Case Description</h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ casee.description }}</p>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Case Number:</strong> {{ casee.case_id }}</p>
+                            <p><strong>Date Reported:</strong> {{ casee.report_date.strftime('%Y-%m-%d') }}</p>
+                            <p><strong>Location:</strong> {{ casee.location }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Status:</strong> <span class="badge badge-{{ 'success' if casee.status == 'Closed' else 'warning' if casee.status == 'Under Investigation' else 'danger' }}">{{ casee.status }}</span></p>
+                            <p><strong>Assigned Officer:</strong> {{ casee.assigned_officer }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Picture Evidence Tab -->
+        <div class="tab-pane fade" id="pics" role="tabpanel" aria-labelledby="pics-tab">
+            <div class="card mt-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>Picture Evidence</h5>
+                    <a href="{{ url_for('evidences.upload_pic', case_id=case_id, team_id=team_id) }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Upload New Picture
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if pics %}
+                        <div class="row">
+                            {% for pic in pics %}
+                            <div class="col-md-4 mb-3">
+                                <div class="evidence-thumbnail">
+                                        <img src="{{ url_for('static', filename='evidence/pics/' ~ casee.id ~ '/' ~ pic.image_file) }}" class="img-fluid img-thumbnail" alt="Evidence Image">
+                                    <div class="evidence-info">
+                                        <p class="mb-1"><strong>Uploaded:</strong> {{ pic.upload_date.strftime('%Y-%m-%d') }}</p>
+                                        <p class="mb-1"><strong>By:</strong> {{ pic.uploaded_by }}</p>
+                                        <button class="btn btn-info btn-sm mt-1" data-toggle="modal" data-target="#picModal{{ loop.index }}">
+                                            <i class="fas fa-search-plus"></i> View Details
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Picture Detail Modal -->
+                                <div class="modal fade" id="picModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="picModalLabel{{ loop.index }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="picModalLabel{{ loop.index }}">Picture Evidence Details</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="text-center mb-3">
+                                                    <img src="{{ url_for('static', filename='evidence/pics/' ~ casee.id ~ '/' ~ pic.image_file) }}" class="img-fluid" alt="Evidence Image">
+                                                </div>
+                                                <p><strong>Description:</strong> {{ pic.description }}</p>
+                                                <p><strong>Uploaded By:</strong> {{ pic.uploaded_by }}</p>
+                                                <p><strong>Upload Date:</strong> {{ pic.upload_date.strftime('%Y-%m-%d %H:%M') }}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <a href="{{ url_for('static', filename='evidence/pics/' ~ casee.id ~ '/' ~ pic.image_file) }}" download class="btn btn-primary">
+                                                    <i class="fas fa-download"></i> Download
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No picture evidence has been uploaded for this case yet.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Video Evidence Tab -->
+        <div class="tab-pane fade" id="videos" role="tabpanel" aria-labelledby="videos-tab">
+            <div class="card mt-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>Video Evidence</h5>
+                    <a href="{{ url_for('evidences.upload_vid', case_id=case_id, team_id=team_id) }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Upload New Video
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if videos %}
+                        <div class="row">
+                            {% for video in videos %}
+                            <div class="col-md-6 mb-3">
+                                <div class="evidence-thumbnail">
+                                    <video controls class="img-fluid img-thumbnail">
+                                        <source src="{{ url_for('static', filename='evidence/videos/' ~ casee.id ~ '/' ~ video.video_file)}}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <div class="evidence-info">
+                                        <p class="mb-1"><strong>Uploaded:</strong> {{ video.upload_date.strftime('%Y-%m-%d') }}</p>
+                                        <p class="mb-1"><strong>By:</strong> {{ video.uploaded_by }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No video evidence has been uploaded for this case yet.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Voice Evidence Tab -->
+        <div class="tab-pane fade" id="voice" role="tabpanel" aria-labelledby="voice-tab">
+            <div class="card mt-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>Voice Evidence</h5>
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#uploadVoiceModal">
+                        <i class="fas fa-plus"></i> Upload New Recording
+                    </button>
+                </div>
+                <div class="card-body">
+                    {% if voices %}
+                        <div class="row">
+                            {% for voice in voices %}
+                            <div class="col-md-6 mb-3">
+                                <div class="evidence-thumbnail">
+                                    <audio controls class="w-100">
+                                        <source src="{{ url_for('static', filename='evidence/voices/' ~ casee.id ~ '/' ~ voice.voice_file)}}" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                    <div class="evidence-info">
+                                        <p class="mb-1"><strong>Uploaded:</strong> {{ voice.upload_date.strftime('%Y-%m-%d') }}</p>
+                                        <p class="mb-1"><strong>By:</strong> {{ voice.uploaded_by }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No voice evidence has been uploaded for this case yet.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .evidence-thumbnail {
+        position: relative;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 4px;
+    }
+    .evidence-info {
+        padding: 10px 0;
+    }
+    .badge-success {
+        background-color: #28a745;
+    }
+    .badge-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+    .badge-danger {
+        background-color: #dc3545;
+    }
+</style>
+{% endblock %}

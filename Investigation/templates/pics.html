@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Upload Evidence Picture</legend>
+
+                <div class="form-group">
+                    {{form.imagefile.label(class="form-control-label")}}
+                    {{ form.imagefile(class="form-control-file") }}
+                    {% if form.imagefile.errors %}
+                        <div class=""text-danger>
+                            {{form.imagefile.errors[0]}}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.description.label(class="form-control-label") }}
+                    {{ form.description(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.upload_date.label(class="form-control-label") }}
+                    {{ form.upload_date(class="form-control", type="date") }}
+                </div>
+
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+{% endblock %}
