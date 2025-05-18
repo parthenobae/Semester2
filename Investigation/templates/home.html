@@ -1,30 +1,46 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container mt-5">
-    <h1 class="dashboard-title text-center mb-4" style="font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #2c3e50; margin-top: 20px;">Dashboard</h1>        
-    <div class="row">
-        <!-- Pending Investigations Card -->
-        <div class="col-md-6 mb-4">
-            <a href="{{url_for( 'users.teams' )}}" class="card-link">
-                <div class="custom-card text-center">
-                    <i class="fas fa-clipboard-list fa-3x mb-3" style="color: #3498db;"></i>
-                    <h2 class="card-heading">Pending Investigations</h2>
-                    <p class="card-subtext">View and manage ongoing criminal cases</p>
-                </div>
-            </a>
+    {% if current_user.username == 'Safi' %}
+        <h1 class="dashboard-title text-center mb-4" style="font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #2c3e50; margin-top: 20px;">Control Board</h1>        
+        <div class="row justify-content-center">
+            <!-- Manage Teams Card -->
+            <div class="col-md-6 mb-4">
+                <a href="{{ url_for('users.manage_teams')}}" class="card-link">
+                    <div class="custom-card text-center">
+                        <i class="fas fa-users fa-3x mb-3" style="color: #3498db;"></i>
+                        <h2 class="card-heading">Manage Teams</h2>
+                        <p class="card-subtext">Assign members to their respective teams</p>
+                    </div>
+                </a>
+            </div>
+        </div>    
+    {% else %}
+        <h1 class="dashboard-title text-center mb-4" style="font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #2c3e50; margin-top: 20px;">Dashboard</h1>        
+        <div class="row">
+            <!-- Pending Investigations Card -->
+            <div class="col-md-6 mb-4">
+                <a href="{{url_for( 'users.teams' )}}" class="card-link">
+                    <div class="custom-card text-center">
+                        <i class="fas fa-clipboard-list fa-3x mb-3" style="color: #3498db;"></i>
+                        <h2 class="card-heading">Pending Investigations</h2>
+                        <p class="card-subtext">View and manage ongoing criminal cases</p>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- DNA Profiling Card -->
+            <div class="col-md-6 mb-4">
+                <a href="{{url_for( 'criminals.profiling' )}}" class="card-link">
+                    <div class="custom-card text-center">
+                        <i class="fas fa-dna fa-3x mb-3" style="color: #e74c3c;"></i>
+                        <h2 class="card-heading">DNA Profiling</h2>
+                        <p class="card-subtext">Access forensic DNA analysis tools</p>
+                    </div>
+                </a>
+            </div>
         </div>
-        
-        <!-- DNA Profiling Card -->
-        <div class="col-md-6 mb-4">
-            <a href="#" class="card-link">
-                <div class="custom-card text-center">
-                    <i class="fas fa-dna fa-3x mb-3" style="color: #e74c3c;"></i>
-                    <h2 class="card-heading">DNA Profiling</h2>
-                    <p class="card-subtext">Access forensic DNA analysis tools</p>
-                </div>
-            </a>
-        </div>
-    </div>
+    {% endif %}
 </div>
 
 <style>

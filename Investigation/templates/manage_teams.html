@@ -1,0 +1,71 @@
+    {% extends "layout.html" %}
+    {% block content %}
+        <div class="content-section">
+            <div class="row">
+                <!-- Teams Section -->
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="mb-0">Teams</h3>
+                        <button class="btn btn-success btn-sm" type="button" data-toggle="collapse" data-target="#addTeamForm" aria-expanded="false" aria-controls="addTeamForm">
+                            <i class="fas fa-user-plus"></i> Add Team
+                        </button>
+                    </div>
+                    <!-- Add Member Form (collapsible) -->
+                    <div class="collapse mb-3" id="addTeamForm">
+                        <div class="card card-body">
+                            <form method="POST" action="">
+                                {{ form.hidden_tag() }}
+                                <div class="form-group">
+                                    {{ form.team_name.label(class="form-label") }}
+                                    {{ form.team_name(class="form-control", placeholder="Enter Team name") }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.submit(class="btn btn-outline-info") }}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    {% if teams %}
+                        <div class="list-group">
+                            {% for team in teams %}
+                                <a href="{{ url_for('users.team_details', team_id=team.id) }}" 
+                                class="list-group-item list-group-item-action">
+                                    {{ team.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No teams have been created yet. Click "Create Team" to get started.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="row">
+                <!-- All Users Section -->
+                <div class="col-md-6">
+                    <h3 class="border-bottom mb-4">All Users</h3>
+                    <div class="list-group">
+                        {% for user in users %}
+                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <div>
+                                        <img src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}" 
+                                            alt="User Image" 
+                                            class="rounded-circle mr-2" 
+                                            style="width: 30px; height: 30px; object-fit: cover;">
+                                        <span class="font-weight-bold">{{ user.username }}</span>
+                                    </div>
+                                    <small class="text-muted">{{ user.role if user.role else 'User' }}</small>
+                                </div>
+                                <p class="mb-1">{{ user.email }}</p>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock content %}

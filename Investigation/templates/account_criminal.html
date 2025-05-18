@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <!-- Large Profile Picture -->
+            <div class="profile-pic-container mb-4">
+                <img src="{{ url_for('static', filename='criminals/' + criminal.image_file) }}" 
+                     alt="Profile Picture" 
+                     class="rounded-circle profile-pic">
+            </div>
+            
+            <!-- User Information -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="account-heading">{{ criminal.name }}</h2>
+                    <hr>
+                    <p class="text-muted">
+                        <i class="fas fa-id-card mr-2"></i>
+                        <strong>ID:</strong> {{ criminal.id }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-pic {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border: 5px solid #2c3e50;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .profile-pic-container {
+        margin-top: -40px;
+    }
+    
+    .account-heading {
+        font-family: 'Montserrat', sans-serif;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+    
+    .card {
+        border-radius: 15px;
+        border: none;
+        padding-top: 60px;
+        margin-top: 60px;
+    }
+</style>
+{% endblock content %}

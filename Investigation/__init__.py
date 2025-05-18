@@ -27,9 +27,12 @@ def create_app(config_class=Config):
     from Investigation.users.routes import users
     from Investigation.main.routes import main
     from Investigation.evidences.routes import evidences
+    from Investigation.criminals.routes import criminals
 
     app.register_blueprint(users)
     app.register_blueprint(evidences)
     app.register_blueprint(main)
+    app.register_blueprint(criminals)
+
 
     return app
